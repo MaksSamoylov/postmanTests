@@ -1,0 +1,385 @@
+{
+	"info": {
+		"_postman_id": "4ef330ab-3dd7-49e3-9cfe-854ad002b112",
+		"name": "TestsSamuraiJS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Authorize on the service",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check userId\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data.userId).to.eql(13725);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check resultCode 0\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.resultCode).to.eql(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check empty messages\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.messages).to.eql([]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type is Json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Type",
+								"value": "Object",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"vasilyushkn@yandex.by\",                \r\n    \"password\":\"vaisler141\",\r\n    \"rememberMe\":\"False\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}//auth/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Autohorize with invalid data",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check messages Incorrect Email or Password\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.messages).to.eql([\"Incorrect Email or Password\"]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check resultCode 1\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.resultCode).to.eql(1);\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"gssgsdgs@gmail.com\",                \r\n    \"password\":\"gssgsdgs\",\r\n    \"rememberMe\":\"True\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}//auth/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authorize with empty fields",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check messages\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.messages).to.eql([\"Please enter your Email\", \"Enter your password\"]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check result code 1\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.resultCode).to.eql(1);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check email field error\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.fieldsErrors[0].field).to.eql(\"email\"),\r",
+									"    pm.expect(jsonData.fieldsErrors[0].error).to.eql(\"Please enter your Email\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check password field error\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.fieldsErrors[1].field).to.eql(\"password\"),\r",
+									"    pm.expect(jsonData.fieldsErrors[1].error).to.eql(\"Enter your password\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type is Json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"\",                \r\n    \"password\":\"\",\r\n    \"rememberMe\":\"True\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}//auth/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authorize with invalid email",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check messages invalid Email\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.messages).to.eql([\"Enter valid Email\"]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check email field error\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.fieldsErrors[0].field).to.eql(\"email\"),\r",
+									"    pm.expect(jsonData.fieldsErrors[0].error).to.eql(\"Enter valid Email\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check resultCode 1\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.resultCode).to.eql(1);\r",
+									"});\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"gssgsdgs.com\",                \r\n    \"password\":\"gssgsdgs\",\r\n    \"rememberMe\":\"True\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{url}}//auth/login",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Is current user authorized ",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Check id\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data.id).to.eql(13725);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check login\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data.login).to.eql(\"vasilyushkn\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check email\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.data.email).to.eql(\"vasilyushkn@yandex.by\");\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check resultCode 0\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.resultCode).to.eql(0);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Check empty messages\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.messages).to.eql([]);\r",
+									"});\r",
+									"\r",
+									"pm.test(\"Content-Type is Json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/auth/me",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Get list of users",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = JSON.parse(responseBody);\r",
+							"pm.environment.set(\"UserId\", jsonData.items[0].id);\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"pm.test(\"Content-Type is Json\", function () {\r",
+							"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/users",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get user by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url}}/profile/{{UserId}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"profile",
+						"{{UserId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "url",
+			"value": ""
+		}
+	]
+}
