@@ -294,48 +294,71 @@
 			]
 		},
 		{
-			"name": "Get list of users",
-			"event": [
+			"name": "List of users",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"var jsonData = JSON.parse(responseBody);\r",
-							"pm.environment.set(\"UserId\", jsonData.items[0].id);\r",
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							"pm.test(\"Content-Type is Json\", function () {\r",
-							"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "{{url}}/users",
-					"host": [
-						"{{url}}"
+					"name": "Get list of users with default count",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// saving first user id into variable \r",
+									"var jsonData = JSON.parse(responseBody);\r",
+									"pm.environment.set(\"UserId\", jsonData.items[0].id);\r",
+									"\r",
+									"\r",
+									"// method verify status code\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// method verify content type\r",
+									"pm.test(\"Content-Type is Json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									"\r",
+									"// method for counting items in the array\r",
+									"pm.test(\"Array items have 10 entity\", function () {\r",
+									"    pm.expect(pm.response.json().items.length).to.eq(10);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
 					],
-					"path": [
-						"users"
-					]
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/users?",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
 			"name": "Get user by id",
