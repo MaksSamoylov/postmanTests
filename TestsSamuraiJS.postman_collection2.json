@@ -341,7 +341,52 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{url}}/users?",
+							"raw": "{{url}}/users",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get list of users with count > 100",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// method verify status code\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// method verify content type\r",
+									"pm.test(\"Content-Type is Json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									"\r",
+									"// method verify value of error, totalCount and items\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error).to.eql(\"Max page size is 100 items\"),\r",
+									"    pm.expect(jsonData.items).to.eql(null),\r",
+									"    pm.expect(jsonData.totalCount).to.eql(0);\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/users?count=101",
 							"host": [
 								"{{url}}"
 							],
@@ -350,8 +395,56 @@
 							],
 							"query": [
 								{
-									"key": "",
-									"value": null
+									"key": "count",
+									"value": "101"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get list  of users with count < 0",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// method verify status code\r",
+									"pm.test(\"Status code is 200\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"});\r",
+									"\r",
+									"// method verify content type\r",
+									"pm.test(\"Content-Type is Json\", function () {\r",
+									"    pm.response.to.have.header(\"Content-Type\", \"application/json; charset=utf-8\");\r",
+									"});\r",
+									"\r",
+									"// method verify value of error, totalCount and items\r",
+									"pm.test(\"Your test name\", function () {\r",
+									"    var jsonData = pm.response.json();\r",
+									"    pm.expect(jsonData.error).to.eql(\"Enter valid data\");\r",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{url}}/users?count=-1",
+							"host": [
+								"{{url}}"
+							],
+							"path": [
+								"users"
+							],
+							"query": [
+								{
+									"key": "count",
+									"value": "-1"
 								}
 							]
 						}
